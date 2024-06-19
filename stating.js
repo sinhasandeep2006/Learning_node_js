@@ -5,6 +5,4 @@ class somemathsobject{
         console.log("object is created");
     }
 }
-module.exports.sum=sum;
-module.exports.PI=PI;
-module.exports.somemathsobject=somemathsobject;
+module.exports ={sum:sum ,PI:PI,somemathsobject:somemathsobject};
