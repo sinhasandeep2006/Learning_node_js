@@ -10,16 +10,31 @@ const server = http.createServer((req, res) => {
     // console.log(res);
     let path = req.url;
     if(path==='/' || path.toLocaleLowerCase()==='/home'){
+        res.writeHead(200,{
+            'content-type':'text/html',
+            'my-header':'hellow,world, i myself created this header'
+        });
         res.end(show.replace('{{%content%}}','you are in home page'));
 }else if( path.toLocaleLowerCase()==='/about'){
+    res.writeHead(200,{
+        'content-type':'text/html',
+        'my-header':'hellow,world, i myself created this header'
+    });
     res.end(show.replace('{{%content%}}','you are in about page'));
 
 }
 else if( path.toLocaleLowerCase()==='/content'){
+    res.writeHead(200,{
+        'content-type':'text/html',
+        'my-header':'hellow,world, i myself created this header'
+    });
     res.end(show.replace('{{%content%}}','you are in content page'));
 
 }
-else{
+else{res.writeHead(404,{
+    'content-type':'text/html',
+    'my-header':'hellow,world, i myself created this header'
+});
     res.end(show.replace('{{%content%}}','page not found'));
 }
 });
