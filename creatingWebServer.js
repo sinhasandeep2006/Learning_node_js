@@ -19,6 +19,9 @@ else if( path.toLocaleLowerCase()==='/content'){
     res.end('you are in content page');
 
 }
+else{
+    res.end('Page not fount!!')
+}
 });
 
 server.listen(8000, '127.0.0.1', () => {
