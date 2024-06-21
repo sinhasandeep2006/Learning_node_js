@@ -8,7 +8,8 @@ const events = require('events');
 
 //USER DEFINED MODULES
 const  replaceHtml = require('./Modules/replaceHtml');
-const user =require('./Modules/user.js')
+const user =require('./Modules/user.js');
+const { error } = require('console');
 //THIRD PARTY MODULES / LIBRARIES
 
 /*LECTURE 4: CODE EXAMPLE************
@@ -62,10 +63,10 @@ console.log('Reading file....');*/
 /*LECTURE 8: CODE EXAMPLE**************
 CREATING A SIMPLE WEB SERVER
 ***************************************/
-const html = fs.readFileSync('./Template/nav_for_server.html', 'utf-8')
-let products = JSON.parse(fs.readFileSync('./data/products.json', 'utf-8'))
-let productListHtml = fs.readFileSync('./Template/product-list.html', 'utf-8');
-let productDetailHtml = fs.readFileSync('./Template/product-details.html', 'utf-8');
+// const html = fs.readFileSync('./Template/nav_for_server.html', 'utf-8')
+// let products = JSON.parse(fs.readFileSync('./data/products.json', 'utf-8'))
+// let productListHtml = fs.readFileSync('./Template/product-list.html', 'utf-8');
+// let productDetailHtml = fs.readFileSync('./Template/product-details.html', 'utf-8');
 
 // function replaceHtml(template, product){
 //     let output = template.replace('{{%IMAGE%}}', product.productImage);
@@ -131,59 +132,72 @@ let productDetailHtml = fs.readFileSync('./Template/product-details.html', 'utf-
 //SERVER INHERITS FROM EVENTEMITTER
 const server = http.createServer();
 
-server.on('request', (request, response) => {
-    let {query, pathname: path} = url.parse(request.url, true)
-    //console.log(x);
-    //let path = request.url;
+// server.on('request', (request, response) => {
+//     let {query, pathname: path} = url.parse(request.url, true)
+//     //console.log(x);
+//     //let path = request.url;
     
-    if(path === '/' || path.toLocaleLowerCase() ==='/home'){
-        response.writeHead(200, {
-            'Content-Type' : 'text/html',
-            'my-header': 'Hellow, world'
-        });
-        response.end(html.replace('{{%CONTENT%}}', 'You are in Home page'));
-    } else if(path.toLocaleLowerCase() === '/about'){
-        response.writeHead(200, {
-            'Content-Type' : 'text/html',
-            'my-header': 'Hellow, world'
-        });
-        response.end(html.replace('{{%CONTENT%}}', 'You are in About page'));
-    } else if(path.toLocaleLowerCase() === '/contact'){
-        response.writeHead(200, {
-            'Content-Type' : 'text/html',
-            'my-header': 'Hellow, world'
-        });
-        response.end(html.replace('{{%CONTENT%}}', 'You are in Contact page'));
-    } else if(path.toLocaleLowerCase() === '/products'){
-        if(!query.id){
-            let productHtmlArray = products.map((prod) => {
-                return replaceHtml(productListHtml, prod);
-            })
-            let productResponseHtml = html.replace('{{%CONTENT%}}', productHtmlArray.join(','));
-            response.writeHead(200, {'Content-Type': 'text/html' });
-            response.end(productResponseHtml);
-        } else {
-            let prod = products[query.id]
-            let productDetailResponseHtml = replaceHtml(productDetailHtml, prod);
-            response.end(html.replace('{{%CONTENT%}}', productDetailResponseHtml));
-        }
-    } else {
-        response.writeHead(404, {
-            'Content-Type' : 'text/html',
-            'my-header': 'Hellow, world'
-        });
-        response.end(html.replace('{{%CONTENT%}}', 'Error 404: Page not found!'));
-    }
-})
+//     if(path === '/' || path.toLocaleLowerCase() ==='/home'){
+//         response.writeHead(200, {
+//             'Content-Type' : 'text/html',
+//             'my-header': 'Hellow, world'
+//         });
+//         response.end(html.replace('{{%CONTENT%}}', 'You are in Home page'));
+//     } else if(path.toLocaleLowerCase() === '/about'){
+//         response.writeHead(200, {
+//             'Content-Type' : 'text/html',
+//             'my-header': 'Hellow, world'
+//         });
+//         response.end(html.replace('{{%CONTENT%}}', 'You are in About page'));
+//     } else if(path.toLocaleLowerCase() === '/contact'){
+//         response.writeHead(200, {
+//             'Content-Type' : 'text/html',
+//             'my-header': 'Hellow, world'
+//         });
+//         response.end(html.replace('{{%CONTENT%}}', 'You are in Contact page'));
+//     } else if(path.toLocaleLowerCase() === '/products'){
+//         if(!query.id){
+//             let productHtmlArray = products.map((prod) => {
+//                 return replaceHtml(productListHtml, prod);
+//             })
+//             let productResponseHtml = html.replace('{{%CONTENT%}}', productHtmlArray.join(','));
+//             response.writeHead(200, {'Content-Type': 'text/html' });
+//             response.end(productResponseHtml);
+//         } else {
+//             let prod = products[query.id]
+//             let productDetailResponseHtml = replaceHtml(productDetailHtml, prod);
+//             response.end(html.replace('{{%CONTENT%}}', productDetailResponseHtml));
+//         }
+//     } else {
+//         response.writeHead(404, {
+//             'Content-Type' : 'text/html',
+//             'my-header': 'Hellow, world'
+//         });
+//         response.end(html.replace('{{%CONTENT%}}', 'Error 404: Page not found!'));
+//     }
+// })
 server.listen(8000, '127.0.0.1', () => {
         console.log('Server has started!');
     })
 
-let myEmitter = new user(); 
-myEmitter.on('userCreated',(id,name)=>{
-    console.log(`A new user ${name} with the ID ${id} is created!`);
+// let myEmitter = new user(); 
+// myEmitter.on('userCreated',(id,name)=>{
+//     console.log(`A new user ${name} with the ID ${id} is created!`);
+// })
+// myEmitter.on('userCreated',(id,name)=>{
+//     console.log(`A new user ${name} with the ID ${id} in database!`);
+// })
+// myEmitter.emit('userCreated',101,'jhon');
+
+
+//  learn the creating own steam
+server.on('request',(req,res)=>{
+    let rs = fs.createReadStream('./files/input.txt');
+    rs.on('data',(chunk)=>{
+        res.write(chunk);
+        res.end();
+    })
+    rs.on('error',(error)=>{
+        rs.end(error.message);
+    })
 })
-myEmitter.on('userCreated',(id,name)=>{
-    console.log(`A new user ${name} with the ID ${id} in database!`);
-})
-myEmitter.emit('userCreated',101,'jhon');
