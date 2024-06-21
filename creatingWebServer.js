@@ -191,13 +191,21 @@ server.listen(8000, '127.0.0.1', () => {
 
 
 //  learn the creating own steam
+// server.on('request',(req,res)=>{
+//     let rs = fs.createReadStream('./files/input.txt');
+//     rs.on('data',(chunk)=>{
+//         res.write(chunk);
+//     })
+//     rs.on('end', ()=>{
+//         res.end();
+//     })
+//     rs.on('error',(error)=>{
+//         rs.end(error.message);
+//     })
+// })
+
+// pip
 server.on('request',(req,res)=>{
-    let rs = fs.createReadStream('./files/input.txt');
-    rs.on('data',(chunk)=>{
-        res.write(chunk);
-        res.end();
-    })
-    rs.on('error',(error)=>{
-        rs.end(error.message);
-    })
+    let rs= fs.createReadStream('./files/input.txt');
+    rs.pipe(res);
 })
