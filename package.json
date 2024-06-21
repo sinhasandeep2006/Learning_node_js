@@ -1,0 +1,22 @@
+{
+  "name": "learning_node_js",
+  "version": "1.0.0",
+  "description": "learnind_node_js",
+  "main": "creatingWebServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sinhasandeep2006/Learning_node_js.git"
+  },
+  "author": "Sandeep sinha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sinhasandeep2006/Learning_node_js/issues"
+  },
+  "homepage": "https://github.com/sinhasandeep2006/Learning_node_js#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
