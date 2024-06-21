@@ -8,7 +8,7 @@ const events = require('events');
 
 //USER DEFINED MODULES
 const  replaceHtml = require('./Modules/replaceHtml');
-
+const user =require('./Modules/user.js')
 //THIRD PARTY MODULES / LIBRARIES
 
 /*LECTURE 4: CODE EXAMPLE************
@@ -83,7 +83,55 @@ let productDetailHtml = fs.readFileSync('./Template/product-details.html', 'utf-
 //     return output;
 // }
 // STEP 1: CREATE A SERVER
-const server = http.createServer((request, response) => {
+// const server = http.createServer((request, response) => {
+//     let {query, pathname: path} = url.parse(request.url, true)
+//     //console.log(x);
+//     //let path = request.url;
+    
+//     if(path === '/' || path.toLocaleLowerCase() ==='/home'){
+//         response.writeHead(200, {
+//             'Content-Type' : 'text/html',
+//             'my-header': 'Hellow, world'
+//         });
+//         response.end(html.replace('{{%CONTENT%}}', 'You are in Home page'));
+//     } else if(path.toLocaleLowerCase() === '/about'){
+//         response.writeHead(200, {
+//             'Content-Type' : 'text/html',
+//             'my-header': 'Hellow, world'
+//         });
+//         response.end(html.replace('{{%CONTENT%}}', 'You are in About page'));
+//     } else if(path.toLocaleLowerCase() === '/contact'){
+//         response.writeHead(200, {
+//             'Content-Type' : 'text/html',
+//             'my-header': 'Hellow, world'
+//         });
+//         response.end(html.replace('{{%CONTENT%}}', 'You are in Contact page'));
+//     } else if(path.toLocaleLowerCase() === '/products'){
+//         if(!query.id){
+//             let productHtmlArray = products.map((prod) => {
+//                 return replaceHtml(productListHtml, prod);
+//             })
+//             let productResponseHtml = html.replace('{{%CONTENT%}}', productHtmlArray.join(','));
+//             response.writeHead(200, {'Content-Type': 'text/html' });
+//             response.end(productResponseHtml);
+//         } else {
+//             let prod = products[query.id]
+//             let productDetailResponseHtml = replaceHtml(productDetailHtml, prod);
+//             response.end(html.replace('{{%CONTENT%}}', productDetailResponseHtml));
+//         }
+//     } else {
+//         response.writeHead(404, {
+//             'Content-Type' : 'text/html',
+//             'my-header': 'Hellow, world'
+//         });
+//         response.end(html.replace('{{%CONTENT%}}', 'Error 404: Page not found!'));
+//     }
+// });
+
+//SERVER INHERITS FROM EVENTEMITTER
+const server = http.createServer();
+
+server.on('request', (request, response) => {
     let {query, pathname: path} = url.parse(request.url, true)
     //console.log(x);
     //let path = request.url;
@@ -126,7 +174,16 @@ const server = http.createServer((request, response) => {
         });
         response.end(html.replace('{{%CONTENT%}}', 'Error 404: Page not found!'));
     }
-});
+})
 server.listen(8000, '127.0.0.1', () => {
         console.log('Server has started!');
     })
+
+let myEmitter = new user(); 
+myEmitter.on('userCreated',(id,name)=>{
+    console.log(`A new user ${name} with the ID ${id} is created!`);
+})
+myEmitter.on('userCreated',(id,name)=>{
+    console.log(`A new user ${name} with the ID ${id} in database!`);
+})
+myEmitter.emit('userCreated',101,'jhon');
