@@ -209,3 +209,18 @@ server.on('request',(req,res)=>{
     let rs= fs.createReadStream('./files/input.txt');
     rs.pipe(res);
 })
+
+// learning the event loop in node js
+console.log('program has started')
+// this settimeout is saved int the first phase
+setTimeout(()=>{
+    console.log("time  out")
+},0)
+// ios 
+fs.readFile('./files/input.txt',()=>{
+    console.log(" file read compeletly")
+})
+setImmediate(()=>{console.log(" this is the immediate check")})
+console.log('program has complet')
+
+
